@@ -22,41 +22,51 @@
 </script>    
 
 <style>
-        .text-temp{
-            width: 45%;
-            color: rgb(46, 15, 75);
-            padding-top: 5px;
-            padding-left: 20px;
-            padding-right: 10px;
+        .temperature-div{
+          width: 40%;
+          float: left;
+          margin-top: 20px;
+          padding-top: 10px;
+          padding-left: 20px;
+          padding-bottom: 20px;
+          padding-right: 20px;
         }
-        .prog-div{
-            float: left;
-            width: 45%;
-            padding-top: 2px;
-            padding-bottom: 20px;
-            padding-left: 20px;
-            padding-right: 10px;
+
+        .text-temp{
+            color: rgb(46, 15, 75);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .progress-bar-full{
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
         .temp-table{
-            float: bottom;
-            width: 45%;
-            padding-top: 80px;
+            padding-top: 30px;
             padding-bottom: 20px;
-            padding-left: 20px;
-            padding-right: 10px;
         }
     </style>
 </head>
 
 <body>
 
+  <div class="temperature-div">
     <div class="text-temp">
       <h6>Raspberry Pi's Temperature !</h6>
     </div>
     
-    <div class="prog-div">
-        <div class="progress" id="temp-scale" role="progressbar" aria-label="Temp Scale" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 30px" >
-            <div class="progress-bar bg-success" id= "temp-val" style="width: 30%">30 °C</div>
+    <div class="progress-bar-full">
+        <div class="progress" role="progressbar" aria-label="Temp Scale" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 30px" >
+            <div class="progress-bar
+                {% if data.temperature <= 32}
+                  bg-success
+                {% elif data.temperature > 32 && data.temperature <= 50}
+                  bg-warning
+                {% else %}
+                  bg-danger
+                {% endif %} "
+              id= "temp-val" 
+              style="width: 30%">30 °C</div>
         </div>
     </div>
 
@@ -89,7 +99,7 @@
           </table>
 
     </div>
-
+  </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
