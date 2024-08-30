@@ -12,9 +12,6 @@
                      const int_temp = parseFloat(data.temperature); 
                      document.getElementById('temp-val').style.width = data.temperature;
 
-                     const fillVal = document.getElementById('fill-prog');
-                     fillVal.value = int_temp;
-
                      document.getElementById('fill-val').width = int_temp;
                   })
                 .catch(error => console.error('Error:', error));

@@ -1,19 +1,18 @@
 from flask import Flask, render_template, jsonify
-import os, re, time
+import os, re
 
 app = Flask(__name__)
 
+def fetch_cpu_temp():
+	out = os.popen("vcgencmd measure_temp").readline()
+	temperature = re.sub('[^0-9.]', '', out)
+	# print (f"Current temperature is: {temperature} ºC")
+	return temperature
 
 @app.route("/")
 def home():
-	cpu_temp = fetch_cpu_temp()
-	return render_template("home.html" , cpu_temp = cpu_temp)
-
-def fetch_cpu_temp():
-	out = os.popen("vcgencmd measure_temp").readline()
-	curr_temp = re.sub('[^0-9.]', '', out)
-	# print (f"Current temperature is: {curr_temp} ºC")
-	return curr_temp
+	cpu_temperature = fetch_cpu_temp()
+	return render_template("home.html" , cpu_temp = cpu_temperature)
 
 @app.route('/temperature')
 def temperature():
