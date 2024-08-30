@@ -2,3 +2,5 @@ Hi There,
 This is a sample test for git push
 Added - for Fetch
 test for Push -2 
+Attempt 4: after configuring gh - credential manger
+
