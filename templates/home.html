@@ -58,9 +58,9 @@
     <div class="progress-bar-full">
         <div class="progress" role="progressbar" aria-label="Temp Scale" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 30px" >
             <div class="progress-bar
-                {% if data.temperature <= 32}
+                {% if cpu_temp <= 32.0 %}
                   bg-success
-                {% elif data.temperature > 32 && data.temperature <= 50}
+                {% elif cpu_temp > 32.0 and cpu_temp <= 50.0 %}
                   bg-warning
                 {% else %}
                   bg-danger
