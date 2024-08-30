@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebPy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script>
+	function fetchTemperature() {
+	    fetch('/temperature')
+	        .then(response => response.json())
+                .then(data => {
+                     const int_temp = parseFloat(data.temperature); 
+                     document.getElementById('temp-val').style.width = data.temperature;
+
+                     const fillVal = document.getElementById('fill-prog');
+                     fillVal.value = int_temp;
+
+                     document.getElementById('fill-val').width = int_temp;
+                  })
+                .catch(error => console.error('Error:', error));
+        }
+        setInterval(fetchTemperature, 1000);
+</script>    
+
+<style>
+        .text-temp{
+            width: 45%;
+            color: rgb(46, 15, 75);
+            padding-top: 5px;
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+        .prog-div{
+            float: left;
+            width: 45%;
+            padding-top: 2px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+        .temp-table{
+            float: bottom;
+            width: 45%;
+            padding-top: 80px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="text-temp">
+      <h6>Raspberry Pi's Temperature !</h6>
+    </div>
+    
+    <div class="prog-div">
+        <div class="progress" id="temp-scale" role="progressbar" aria-label="Temp Scale" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 30px" >
+            <div class="progress-bar bg-success" id= "temp-val" style="width: 30%">30 °C</div>
+        </div>
+    </div>
+
+    <div class="temp-table">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">SNr.</th>
+                <th scope="col">Scenario</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Highest Temperature: </td>
+                <td>58 °C</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Lowest Temperature</td>
+                <td>32 °C</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Avg. Temperature</td>
+                <td>44 °C</td>
+              </tr>
+            </tbody>
+          </table>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
