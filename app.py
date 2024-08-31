@@ -11,13 +11,13 @@ def fetch_cpu_temp():
 
 @app.route("/")
 def home():
-	cpu_temperature = float(fetch_cpu_temp())
+	# cpu_temperature = float(fetch_cpu_temp())
 	return render_template("home.html") # , cpu_temp = cpu_temperature)
 
 @app.route('/temperature')
 def temperature():
-	temp =  fetch_cpu_temp()
-	return jsonify(temperature=temp)
+	cpu_temperature =  fetch_cpu_temp()
+	return jsonify(temperature=cpu_temperature)
 
 if __name__ == "__main__":
 	app.run(host = "0.0.0.0", port = 8000)
