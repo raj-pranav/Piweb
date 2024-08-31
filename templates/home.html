@@ -13,6 +13,13 @@
                      document.getElementById('temp-val').style.width = data.temperature + '%';
                      document.getElementById('temp-val').innerHTML = data.temperature + '°C' ;
                      document.getElementById('high-temp-table').innerHTML = data.temperature + '°C' ;
+                     if (int_temp <= 32.0){
+                      document.getElementById('progress-indicator').className = 'progress-bar bg-success' ;
+                     } else if (int_temp > 32.0 && int_temp <= 50.0) {
+                      document.getElementById('progress-indicator').className = 'progress-bar bg-info' ;
+                     } else {
+                      document.getElementById('progress-indicator').className = 'progress-bar bg-danger' ;
+                     }
 
                   })
 
@@ -57,16 +64,7 @@
     
     <div class="progress-bar-full">
         <div class="progress" role="progressbar" aria-label="Temp Scale" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 30px" >
-            <div class="progress-bar
-                {% if cpu_temp <= 32.0 %}
-                  bg-success
-                {% elif cpu_temp > 32.0 and cpu_temp <= 50.0 %}
-                  bg-warning
-                {% else %}
-                  bg-danger
-                {% endif %} "
-              id= "temp-val" 
-              style="width: 30%">30 °C</div>
+            <div id="progress-indicator" class="progress-bar bg-success" id= "temp-val" style="width: 30%">30 °C</div>
         </div>
     </div>
 
