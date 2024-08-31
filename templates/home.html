@@ -14,7 +14,7 @@
           const int_temp = parseFloat(data.temperature);
           document.getElementById('temp-val').style.width = data.temperature + '%';
           document.getElementById('temp-val').innerHTML = data.temperature + ' °C';
-          document.getElementById('high-temp-table').innerHTML = data.temperature + ' °C';
+
           if (int_temp <= 35.0) {
             document.getElementById('temp-val').className = 'progress-bar bg-success';
           } else if (int_temp > 35.0 && int_temp < 50.0) {
