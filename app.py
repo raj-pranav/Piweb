@@ -26,7 +26,7 @@ def temperature_stats():
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
     high, low, avg = c.fetchone()
     conn.close()
-    return high, low, avg
+    return high, low, round(avg,1)
 
 
 @app.route("/")
