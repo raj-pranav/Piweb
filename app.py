@@ -50,8 +50,8 @@ def temperature_data():
     conn.close()
     
     # Convert data to a format suitable for Chart.js
-    times = [row[2] for row in data]
-    temps = [row[1] for row in data]
+    times = [row[1] for row in data]
+    temps = [row[2] for row in data]
     
     return jsonify({'times': times, 'temps': temps})
 
