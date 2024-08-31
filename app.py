@@ -15,7 +15,7 @@ def store_temperature(temp):
 	c = conn.cursor()
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
-	c.execute("INSERT INTO temperatures (temp, timestamp) VALUES (?, ?)", (datetime.now() , temp))
+	c.execute("INSERT INTO temperatures (temp, timestamp) VALUES (?, ?)", (temp, datetime.now()))
 
 	conn.commit()
 	conn.close()
