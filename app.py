@@ -20,11 +20,20 @@ def store_temperature(temp):
 	conn.commit()
 	conn.close()
 
+def temperature_stats():
+    conn = sqlite3.connect('temperature.db')
+    c = conn.cursor()
+    c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
+    high, low, avg = c.fetchone()
+    conn.close()
+    return high, low, avg
+
 
 @app.route("/")
 def home():
 	# cpu_temperature = float(fetch_cpu_temp())
-	return render_template("home.html") # , cpu_temp = cpu_temperature)
+	max_temp, min_temp, avg_temp = temperature_stats()
+	return render_template("home.html", max_temp=max_temp, min_temp= min_temp, avg_temp=avg_temp)
 
 @app.route('/temperature')
 def temperature():
