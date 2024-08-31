@@ -20,7 +20,7 @@ def store_temperature(temp):
 	conn.commit()
 	conn.close()
 
-def temperature_stats():
+def temperature_stats(): # for updating table values
     conn = sqlite3.connect('temperature.db')
     c = conn.cursor()
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
@@ -40,6 +40,20 @@ def temperature():
 	cpu_temperature =  fetch_cpu_temp()
 	store_temperature(cpu_temperature)  # Store temperature in DB
 	return jsonify(temperature=cpu_temperature)
+
+@app.route('/temperature_chart')
+def temperature_data():
+    conn = sqlite3.connect('temperature.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 40")
+    data = c.fetchall()
+    conn.close()
+    
+    # Convert data to a format suitable for Chart.js
+    times = [row[2] for row in data]
+    temps = [row[1] for row in data]
+    
+    return jsonify({'times': times, 'temps': temps})
 
 
 if __name__ == "__main__":
