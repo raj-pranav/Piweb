@@ -12,7 +12,7 @@ def fetch_cpu_temp():
 @app.route("/")
 def home():
 	cpu_temperature = float(fetch_cpu_temp())
-	return render_template("home.html" , cpu_temp = cpu_temperature)
+	return render_template("home.html") # , cpu_temp = cpu_temperature)
 
 @app.route('/temperature')
 def temperature():
