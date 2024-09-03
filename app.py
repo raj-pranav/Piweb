@@ -15,7 +15,7 @@ def store_temperature(temp):
 	c = conn.cursor()
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
-	c.execute("INSERT INTO temperatures (temp, timestamp) VALUES (?, ?)", (temp, datetime.now()))
+	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (datetime.now(), temp ))
 
 	conn.commit()
 	conn.close()
@@ -28,11 +28,11 @@ def temperature_stats(): # for updating table values
     conn.close()
     return high, low, round(avg,1)
 
-def temperature_history(data_points = 40):
-	""" Output temperature history stored in the DB, upto a limit based on provided argument """
+def temperature_history():
+	""" Output temperature history stored in the DB  """
 	conn = sqlite3.connect('temperature.db')
 	c = conn.cursor()
-	c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 20 ")
+	c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 40 ")
 	data = c.fetchall()
 	conn.close()
 	# Convert data to a format suitable for Chart.js
@@ -45,7 +45,7 @@ def temperature_history(data_points = 40):
 @app.route("/")
 def home():
 	# cpu_temperature = float(fetch_cpu_temp())
-	labels, values = temperature_history(20)
+	labels, values = temperature_history()
 	max_temp, min_temp, avg_temp = temperature_stats()
 	return render_template("home.html", max_temp=max_temp, min_temp= min_temp, avg_temp=avg_temp, labels = labels, values = values)
 
