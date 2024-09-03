@@ -28,12 +28,26 @@ def temperature_stats(): # for updating table values
     conn.close()
     return high, low, round(avg,1)
 
+def temperature_history(data_points = 40):
+	""" Output temperature history stored in the DB, upto a limit based on provided argument """
+	conn = sqlite3.connect('temperature.db')
+	c = conn.cursor()
+	c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 20 ")
+	data = c.fetchall()
+	conn.close()
+	# Convert data to a format suitable for Chart.js
+	labels = [row[1] for row in data]
+	values = [row[2] for row in data]
+	print (labels, values)
+	return labels, values
+
 
 @app.route("/")
 def home():
 	# cpu_temperature = float(fetch_cpu_temp())
+	labels, values = temperature_history(20)
 	max_temp, min_temp, avg_temp = temperature_stats()
-	return render_template("home.html", max_temp=max_temp, min_temp= min_temp, avg_temp=avg_temp)
+	return render_template("home.html", max_temp=max_temp, min_temp= min_temp, avg_temp=avg_temp, labels = labels, values = values)
 
 @app.route('/temperature')
 def temperature():
@@ -41,19 +55,7 @@ def temperature():
 	store_temperature(cpu_temperature)  # Store temperature in DB
 	return jsonify(temperature=cpu_temperature)
 
-@app.route('/temperature_chart')
-def temperature_data():
-    conn = sqlite3.connect('temperature.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 40")
-    data = c.fetchall()
-    conn.close()
-    
-    # Convert data to a format suitable for Chart.js
-    times = [row[1] for row in data]
-    temps = [row[2] for row in data]
-    
-    return jsonify({'times': times, 'temps': temps})
+
 
 
 if __name__ == "__main__":
