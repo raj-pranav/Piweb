@@ -20,7 +20,7 @@ def store_temperature(temp):
 	conn.commit()
 	conn.close()
 
-def temperature_stats(): # for updating table values
+def temperature_stats(): # for updating table values in web
     conn = sqlite3.connect('temperature.db')
     c = conn.cursor()
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
