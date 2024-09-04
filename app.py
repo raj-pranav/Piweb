@@ -8,14 +8,13 @@ app = Flask(__name__)
 def fetch_cpu_temp():
 	out = os.popen("vcgencmd measure_temp").readline()
 	temperature = re.sub('[^0-9.]', '', out)
-	
 	# print (f"Current temperature is: {temperature} ºC")
 	# temperature = random.uniform(30.0, 60.0)
 	# print (temperature)
 	return temperature
 
 def timestamp_in_HMS():
-	""" Returns current timestamp in HH:MM:SS"""
+	""" Convert current timestamp in HH:MM:SS """
 	now = datetime.now()
 	# Format the current time as "hour:min:second"
 	f_timestamp = now.strftime("%H:%M:%S")
@@ -27,7 +26,6 @@ def store_temperature(temp):
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
 	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), temp ))
-
 	conn.commit()
 	conn.close()
 
@@ -39,7 +37,7 @@ def temperature_stats(): # for updating table values in web
     conn.close()
     return round(high,1), round(low,1), round(avg,1)
 
-def temperature_history(limit = 40):
+def temperature_history(limit = 20):
 	""" Read Database and fetch temperature last few entries, as provide by limit value [Default is 40 vlaues ]   """
 	conn = sqlite3.connect('temperature.db')
 	c = conn.cursor()
@@ -65,6 +63,10 @@ def temperature():
 	cpu_temperature =  fetch_cpu_temp()
 	store_temperature(cpu_temperature)  # Store temperature in DB
 	return jsonify(temperature=cpu_temperature)
+
+@app.route('/temp-chart')
+def update_chart_temperature():
+	return jsonify(label = timestamp_in_HMS(), value = fetch_cpu_temp())
 
 
 

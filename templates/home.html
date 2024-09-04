@@ -159,7 +159,26 @@
             }
           }
         }
-      });          
+      });
+      
+      function fetchTemperature() {
+            fetch('/temp-chart')
+                .then(response => response.json())
+                .then(data => {
+                    tempChart.data.labels.push(data.label);
+                    tempChart.data.datasets[0].data.push(data.value);
+
+                    if (tempChart.data.labels.length > 30) {
+                      tempChart.data.labels.shift();
+                      tempChart.data.datasets[0].data.shift();
+                    }
+
+                    tempChart.update();
+                });
+        }
+
+        // Poll the server every 4 seconds
+        setInterval(fetchTemperature, 4000);
   </script>
 
 <div class="ToDo">
