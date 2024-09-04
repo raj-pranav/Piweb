@@ -141,7 +141,7 @@
             label : "Temperature History",
             data  : {{ values | safe }},
             fill : false,
-            borderColor: ["rgb(146, 45, 241)"],
+            borderColor: "rgb(146, 45, 241)",
             lineTension: 0.3
           }
          ]
@@ -172,6 +172,8 @@
                       tempChart.data.labels.shift();
                       tempChart.data.datasets[0].data.shift();
                     }
+                    if (!Array.isArray(tempChart.data.datasets[0].borderColor)) {
+                      tempChart.data.datasets[0].borderColor = [];
 
                     if (data.value <= 38.0) {
                       tempChart.data.datasets[0].borderColor.push("rgb(11, 191, 88)")
