@@ -178,10 +178,13 @@
 
                     if (data.value <= 38.0) {
                       tempChart.data.datasets[0].borderColor.push("rgb(11, 191, 88)")
+                      tempChart.update();
                     } else if (data.value > 38.0 && data.value < 56.0) {
                       tempChart.data.datasets[0].borderColor.push("rgb(241, 216, 11)")
+                      tempChart.update();
                     } else {
                       tempChart.data.datasets[0].borderColor.push("rgb(245, 7, 25)")
+                      tempChart.update();
                     }
 
                     tempChart.update();
