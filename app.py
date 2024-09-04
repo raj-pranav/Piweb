@@ -1,21 +1,32 @@
 from flask import Flask, render_template, jsonify
 import os, re, sqlite3
 from datetime import datetime
+import random
 
 app = Flask(__name__)
 
 def fetch_cpu_temp():
 	out = os.popen("vcgencmd measure_temp").readline()
 	temperature = re.sub('[^0-9.]', '', out)
+	
 	# print (f"Current temperature is: {temperature} ºC")
+	# temperature = random.uniform(30.0, 60.0)
+	# print (temperature)
 	return temperature
+
+def timestamp_in_HMS():
+	""" Returns current timestamp in HH:MM:SS"""
+	now = datetime.now()
+	# Format the current time as "hour:min:second"
+	f_timestamp = now.strftime("%H:%M:%S")
+	return f_timestamp
 
 def store_temperature(temp):
 	conn = sqlite3.connect('temperature.db')
 	c = conn.cursor()
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
-	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (datetime.now(), temp ))
+	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), temp ))
 
 	conn.commit()
 	conn.close()
@@ -28,24 +39,24 @@ def temperature_stats(): # for updating table values in web
     conn.close()
     return high, low, round(avg,1)
 
-def temperature_history():
-	""" Output temperature history stored in the DB  """
+def temperature_history(limit = 40):
+	""" Read Database and fetch temperature last few entries, as provide by limit value [Default is 40 vlaues ]   """
 	conn = sqlite3.connect('temperature.db')
 	c = conn.cursor()
-	c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT 40 ")
+	c.execute("SELECT * FROM temperatures ORDER BY timestamp DESC LIMIT ?", (limit,))
 	data = c.fetchall()
 	conn.close()
 	# Convert data to a format suitable for Chart.js
 	labels = [row[1] for row in data]
 	values = [row[2] for row in data]
-	print (labels, values)
+	# print (labels, values)
 	return labels, values
 
 
 @app.route("/")
 def home():
-	# cpu_temperature = float(fetch_cpu_temp())
-	labels, values = temperature_history()
+	# cpu_temperature = fetch_cpu_temp()
+	labels, values = temperature_history(30)
 	max_temp, min_temp, avg_temp = temperature_stats()
 	return render_template("home.html", max_temp=max_temp, min_temp= min_temp, avg_temp=avg_temp, labels = labels, values = values)
 
