@@ -174,11 +174,11 @@
                     }
 
                     if (data.value <= 38.0) {
-                      tempChart.data.datasets.borderColor.push("rgb(11, 191, 88)")
+                      tempChart.data.datasets[0].borderColor.push("rgb(11, 191, 88)")
                     } else if (data.value > 38.0 && data.value < 56.0) {
-                      tempChart.data.datasets.borderColor.push("rgb(241, 216, 11)")
+                      tempChart.data.datasets[0].borderColor.push("rgb(241, 216, 11)")
                     } else {
-                      tempChart.data.datasets.borderColor.push("rgb(245, 7, 25)")
+                      tempChart.data.datasets[0].borderColor.push("rgb(245, 7, 25)")
                     }
 
                     tempChart.update();
