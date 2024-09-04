@@ -37,7 +37,7 @@ def temperature_stats(): # for updating table values in web
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
     high, low, avg = c.fetchone()
     conn.close()
-    return high, low, round(avg,1)
+    return round(high,1), round(low,1), round(avg,1)
 
 def temperature_history(limit = 40):
 	""" Read Database and fetch temperature last few entries, as provide by limit value [Default is 40 vlaues ]   """

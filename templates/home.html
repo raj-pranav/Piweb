@@ -18,9 +18,9 @@
           document.getElementById('temp-val').style.width = data.temperature + '%';
           document.getElementById('temp-val').innerHTML = data.temperature + ' °C';
 
-          if (int_temp <= 35.0) {
+          if (int_temp <= 38.0) {
             document.getElementById('temp-val').className = 'progress-bar bg-success';
-          } else if (int_temp > 35.0 && int_temp < 50.0) {
+          } else if (int_temp > 38.0 && int_temp < 56.0) {
             document.getElementById('temp-val').className = 'progress-bar bg-warning';
           } else {
             document.getElementById('temp-val').className = 'progress-bar bg-danger';
