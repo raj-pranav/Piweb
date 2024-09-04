@@ -140,7 +140,7 @@
           {
             label : "Temperature History",
             data  : {{ values | safe }},
-            fill : true,
+            fill : false,
             borderColor: "rgb(0, 0, 0)",
             lineTension: 0.3
           }
@@ -150,8 +150,8 @@
           responsive: false,
           scales: {
             y: {
-              min: 20,
-              max: 80,
+              min: 25,
+              max: 65,
               title: {
                 display: true,
                 text: 'Temperature (°C)'
