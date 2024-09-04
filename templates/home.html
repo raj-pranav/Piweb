@@ -140,7 +140,7 @@
           {
             label : "Temperature History",
             data  : {{ values | safe }},
-            fill : false,
+            fill : true,
             borderColor: "rgb(0, 0, 0)",
             lineTension: 0.3
           }
@@ -172,18 +172,15 @@
                       tempChart.data.labels.shift();
                       tempChart.data.datasets[0].data.shift();
                     }
-                    if (!Array.isArray(tempChart.data.datasets[0].borderColor)) {
-                      tempChart.data.datasets[0].borderColor = [];
-                    }
 
                     if (data.value <= 38.0) {
-                      tempChart.data.datasets[0].borderColor.push("rgb(11, 191, 88)");
+                      tempChart.data.datasets[0].borderColor = "rgb(11, 191, 88)";
                       tempChart.update();
-                    } else if (data.value > 38.0 && data.value < 56.0) {
-                      tempChart.data.datasets[0].borderColor.push("rgb(241, 216, 11)");
+                    } else if (data.value > 38.0 && data.value <= 56.0) {
+                      tempChart.data.datasets[0].borderColor = "rgb(241, 216, 11)";
                       tempChart.update();
                     } else {
-                      tempChart.data.datasets[0].borderColor.push("rgb(245, 7, 25)");
+                      tempChart.data.datasets[0].borderColor = "rgb(245, 7, 25)";
                       tempChart.update();
                     }
 
