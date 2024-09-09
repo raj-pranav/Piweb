@@ -25,7 +25,7 @@ def store_temperature(temp):
 	c = conn.cursor()
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
-	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), temp ))
+	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), float(temp) ))
 	conn.commit()
 	conn.close()
 
@@ -35,7 +35,7 @@ def temperature_stats(): # for updating table values in web
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
     high, low, avg = c.fetchone()
     conn.close()
-    return round(high,1), round(low,1), round(avg,1)
+    return high, low, avg
 
 def temperature_history(limit = 20):
 	""" Read Database and fetch temperature last few entries, as provide by limit value [Default is 40 vlaues ]   """
@@ -72,4 +72,4 @@ def update_chart_temperature():
 
 
 if __name__ == "__main__":
-	app.run(host = "0.0.0.0", port = 8000)
+	app.run(host = "0.0.0.0", port = 8080)
