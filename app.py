@@ -6,7 +6,7 @@ import random
 app = Flask(__name__)
 
 def fetch_cpu_temp():
-	out = os.popen("vcgencmd measure_temp").readline()
+	out = os.popen("/usr/bin/vcgencmd measure_temp").readline()
 	temperature = re.sub('[^0-9.]', '', out)
 	# print (f"Current temperature is: {temperature} ºC")
 	# temperature = random.uniform(30.0, 60.0)
@@ -25,7 +25,7 @@ def store_temperature(temp):
 	c = conn.cursor()
 	c.execute('''CREATE TABLE IF NOT EXISTS temperatures
                  (id INTEGER PRIMARY KEY, timestamp TEXT, temp REAL)''')
-	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), float(temp) ))
+	c.execute("INSERT INTO temperatures (timestamp, temp) VALUES (?, ?)", (timestamp_in_HMS(), temp) )
 	conn.commit()
 	conn.close()
 
@@ -35,7 +35,7 @@ def temperature_stats(): # for updating table values in web
     c.execute("SELECT MAX(temp), MIN(temp), AVG(temp) FROM temperatures")
     high, low, avg = c.fetchone()
     conn.close()
-    return high, low, avg
+    return high, low, f'{avg:.2f}'
 
 def temperature_history(limit = 20):
 	""" Read Database and fetch temperature last few entries, as provide by limit value [Default is 40 vlaues ]   """
